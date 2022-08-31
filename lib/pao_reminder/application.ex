@@ -9,7 +9,7 @@ defmodule PaoReminder.Application do
 
   @impl true
   def start(_type, _args) do
-    token = Application.fetch_env!(:pao_reminder, :token_bot)
+    bot_config = Application.fetch_env!(:pao_reminder, :bot_config)
 
     children = [
       # Start the Ecto repository
@@ -22,9 +22,9 @@ defmodule PaoReminder.Application do
       PaoReminderWeb.Endpoint,
       # Start a worker by calling: PaoReminder.Worker.start_link(arg)
       # {PaoReminder.Worker, arg}
-      {Telegram.Poller, bots: [{Reminder, token: token, max_bot_concurrency: 1_000}]},
+      {Telegram.Poller, bots: [{Reminder, bot_config}]}
       # Scheduler
-      PaoReminder.Scheduler
+      #      PaoReminder.Scheduler
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
